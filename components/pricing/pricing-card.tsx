@@ -86,7 +86,7 @@ const PricingFeatures = memo(function PricingFeatures({
       <p className="text-sm font-semibold text-neutral-900 font-inter mb-4">
         {isEnterprise ? "Professional Plan features, plus:" : "What's Included"}
       </p>
-      <FeatureList features={features} planName={planName} />
+      <FeatureList features={features} />
     </div>
   )
 })

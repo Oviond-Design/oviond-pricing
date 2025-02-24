@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 const BillingTabs = memo(function BillingTabs({ 
   onValueChange 
 }: { 
-  onValueChange: (value: BillingCycle) => void 
+  onValueChange: (value: string) => void 
 }) {
   return (
     <div className="flex justify-center mb-16">

@@ -13,7 +13,6 @@ interface ClientSelectorProps {
   clientCount: number
   onClientCountChange: (value: number) => void
   highlighted?: boolean
-  billingCycle: BillingCycle
 }
 
 const NumberInput = memo(function NumberInput({

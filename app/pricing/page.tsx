@@ -1,4 +1,4 @@
-import { PricingTable } from "@/components/pricing/pricing-table"
+import { PricingTable } from "@/components/pricing/PricingTable"
 
 export const metadata = {
   title: "Pricing Plans",
@@ -7,7 +7,8 @@ export const metadata = {
 
 export default function PricingPage() {
   return (
-    <div className="w-full">
+    <div className="container mx-auto py-12">
+      <h1 className="text-4xl font-bold text-center mb-8 font-lexend">Our Pricing Plans</h1>
       <PricingTable />
     </div>
   )

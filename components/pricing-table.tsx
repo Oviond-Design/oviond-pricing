@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Check } from "lucide-react"
-import { Button } from "./ui/button"
 import { Card, CardContent } from "./ui/card"
 import { Input } from "./ui/input"
 import { Slider } from "./ui/slider"

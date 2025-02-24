@@ -2,10 +2,9 @@ import { memo } from "react"
 import { Check } from "lucide-react"
 interface FeatureListProps {
   features: Array<{ text: string }>
-  planName: string
 }
 
-export const FeatureList = memo(function FeatureList({ features, planName }: FeatureListProps) {
+export const FeatureList = memo(function FeatureList({ features }: FeatureListProps) {
   return (
     <div>
       <ul className="space-y-4">

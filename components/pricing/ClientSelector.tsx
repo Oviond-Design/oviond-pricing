@@ -63,8 +63,6 @@ export const ClientSelector = memo(function ClientSelector({
           step={1}
           className={`flex-1 ${highlighted ? "bg-white shadow-sm" : ""}`}
           aria-label={`Slider for number of clients in ${tier.name}`}
-          isProfessionalPlan={tier.name === "Professional Plan"}
-          billingCycle={billingCycle}
         />
       </div>
     </div>

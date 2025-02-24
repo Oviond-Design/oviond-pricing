@@ -98,12 +98,7 @@ export default function PricingTable() {
                       </div>
                     )}
 
-                    <Button
-                      className={`mt-6 w-full font-lexend ${
-                        tier.highlighted
-                          ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-                          : "bg-neutral-100 hover:bg-neutral-200 text-neutral-900"
-                      }`}
+                    <a
                       href={
                         tier.name === "Enterprise Plan"
                           ? "https://www.oviond.com/contact/"
@@ -111,9 +106,14 @@ export default function PricingTable() {
                       }
                       target="_blank"
                       rel="noopener noreferrer"
+                      className={`mt-6 w-full font-lexend inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 ${
+                        tier.highlighted
+                          ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+                          : "bg-neutral-100 hover:bg-neutral-200 text-neutral-900"
+                      }`}
                     >
                       {tier.buttonText.toUpperCase()}
-                    </Button>
+                    </a>
 
                     <div className="mt-6">
                       <p className="font-medium text-neutral-900 mb-4 font-lexend">

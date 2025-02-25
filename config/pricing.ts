@@ -8,9 +8,9 @@ export const pricingTiers: PricingTier[] = [
   {
     name: "Starter Plan",
     description: "Perfect for small teams managing up to 19 clients.",
-    minClients: 3,
+    minClients: 1,
     maxClients: 19,
-    basePrice: 39,
+    basePrice: 15,
     maxPrice: 119,
     buttonText: "TRY IT FREE",
     features: [

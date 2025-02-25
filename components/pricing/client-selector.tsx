@@ -108,7 +108,6 @@ export const ClientSelector = memo(function ClientSelector({
 }: ClientSelectorProps) {
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      // Always use the actual input value, don't parse until we need to
       const inputValue = event.target.value;
 
       // If empty, don't do anything
@@ -116,12 +115,17 @@ export const ClientSelector = memo(function ClientSelector({
 
       const value = Number.parseInt(inputValue, 10);
       if (!isNaN(value)) {
-        // Simple clamping between min and max
-        const clampedValue = Math.min(
-          Math.max(value, tier.minClients),
-          tier.maxClients,
-        );
-        onClientCountChange(clampedValue);
+        // Only clamp if the value is outside the valid range
+        if (value >= tier.minClients && value <= tier.maxClients) {
+          onClientCountChange(value);
+        } else {
+          // If outside range, clamp to min/max
+          const clampedValue = Math.min(
+            Math.max(value, tier.minClients),
+            tier.maxClients,
+          );
+          onClientCountChange(clampedValue);
+        }
       }
     },
     [tier.minClients, tier.maxClients, onClientCountChange],

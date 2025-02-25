@@ -109,7 +109,9 @@ const PricingFeatures = memo(function PricingFeatures({
   return (
     <div className="flex-1">
       <p className="text-sm font-bold text-neutral-900 font-lexend mb-5">
-        {planName === "Professional Plan"
+        {planName === "Enterprise Plan"
+          ? "Professional Plan features, plus:"
+          : planName === "Professional Plan"
           ? "Starter Plan features, plus:"
           : "What's Included"}
       </p>

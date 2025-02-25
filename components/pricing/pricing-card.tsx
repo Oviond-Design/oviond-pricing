@@ -43,11 +43,11 @@ const PricingAmount = memo(function PricingAmount({
 }) {
   const formattedPrice = new Intl.NumberFormat("en-US").format(price);
   return (
-    <div className="flex items-baseline gap-2">
+    <div className="flex items-baseline gap-1.5">
       <span className="text-5xl font-extrabold text-neutral-900 font-lexend tracking-tight">
         ${formattedPrice}
       </span>
-      <span className="text-base font-medium text-neutral-500 font-lexend ml-0.5 mt-1.5">
+      <span className="text-sm font-medium text-neutral-500 font-lexend ml-0.5 mt-1.5 whitespace-nowrap">
         /Month {billingCycle === "yearly" ? "(Billed Annually)" : ""}
       </span>
     </div>

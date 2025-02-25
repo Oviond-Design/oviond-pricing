@@ -80,7 +80,7 @@ const NumberInput = memo(function NumberInput({
     <input
       id={id}
       type="number"
-      value={localValue}
+      value={displayValue}
       onChange={handleChange}
       onBlur={handleBlur}
       className={cn(

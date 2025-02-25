@@ -15,11 +15,22 @@ export const FeatureList = memo(function FeatureList({ features }: FeatureListPr
               aria-hidden="true" 
               strokeWidth={2.5}
             />
-            <span className="text-sm text-neutral-600 font-inter leading-relaxed">{feature.text}</span>
+            <span className="text-sm text-neutral-600 font-inter leading-relaxed">
+              {feature.text.startsWith('Manage') ? (
+                <>
+                  Manage{' '}
+                  <span className="text-base font-bold">
+                    {feature.text.match(/\d+/)?.[0] || ''}
+                  </span>
+                  {feature.text.slice((feature.text.match(/\d+/)?.[0]?.length || 0) + 7)}
+                </>
+              ) : (
+                feature.text
+              )}
+            </span>
           </li>
         ))}
       </ul>
     </div>
   )
 })
-

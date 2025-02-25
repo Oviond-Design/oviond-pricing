@@ -25,24 +25,22 @@ const PricingHeader = memo(function PricingHeader({
   return (
     <div>
       <h3 className="text-2xl font-bold text-neutral-900 font-lexend tracking-tight">{name}</h3>
-      <p className="text-neutral-600 mt-2.5 font-inter text-base font-medium leading-relaxed max-w-[280px]">{description}</p>
+      <p className="text-neutral-600 mt-2.5 font-inter text-base font-medium leading-normal max-w-[280px]">{description}</p>
     </div>
   )
 })
 
 const PricingAmount = memo(function PricingAmount({ 
-  price, 
-  billingCycle 
+  price
 }: { 
   price: number
-  billingCycle: BillingCycle 
 }) {
   const formattedPrice = new Intl.NumberFormat('en-US').format(price)
   return (
     <div className="flex items-baseline gap-2">
-      <span className="text-5xl font-bold text-neutral-900 font-lexend tracking-tight">${formattedPrice}</span>
-      <span className="text-sm font-medium text-neutral-600 font-inter ml-1">
-        /{billingCycle === "monthly" ? "mo" : "mo, billed yearly"}
+      <span className="text-5xl font-extrabold text-neutral-900 font-lexend tracking-tight">${formattedPrice}</span>
+      <span className="text-base font-medium text-neutral-500 font-lexend ml-0.5 mt-1.5">
+        /mo
       </span>
     </div>
   )
@@ -60,7 +58,7 @@ const PricingCTA = memo(function PricingCTA({
   return (
     <Button
       className={cn(
-        "w-full font-lexend text-base shadow-sm transition-all",
+        "w-full font-lexend text-base font-bold shadow-sm transition-all",
         highlighted
           ? "bg-blue-700 hover:bg-blue-800 text-white font-medium"
           : "border-2 border-blue-700 bg-white text-blue-700 hover:bg-blue-50 font-medium",
@@ -74,19 +72,26 @@ const PricingCTA = memo(function PricingCTA({
 
 const PricingFeatures = memo(function PricingFeatures({ 
   features, 
-  planName, 
-  isEnterprise 
+  planName,
+  clientCount,
+  isEnterprise
 }: { 
   features: Array<{ text: string}>
   planName: string
-  isEnterprise: boolean 
+  clientCount: number
+  isEnterprise: boolean
 }) {
+  const dynamicFeatures = [
+    { text: `Manage ${clientCount} client${clientCount === 1 ? '' : 's'}` },
+    ...features
+  ]
+
   return (
-    <div className="flex-1 pt-6 border-t border-neutral-100">
-      <p className="text-sm font-semibold text-neutral-900 font-inter mb-4">
-        {isEnterprise ? "Professional Plan features, plus:" : "What's Included"}
+    <div className="flex-1">
+      <p className="text-sm font-bold text-neutral-900 font-lexend mb-5">
+        {planName === "Professional Plan" ? "Starter Plan features, plus:" : "What's Included"}
       </p>
-      <FeatureList features={features} />
+      <FeatureList features={isEnterprise ? features : dynamicFeatures} />
     </div>
   )
 })
@@ -110,31 +115,34 @@ export const PricingCard = memo(function PricingCard({
       )}
     >
       <CardContent className="p-8 sm:p-10">
-        <div className="flex flex-col min-h-[580px] space-y-8">
-          <PricingHeader name={tier.name} description={tier.description} />
+        <div className="flex flex-col min-h-[580px]">
+          <div className="space-y-6">
+            <PricingHeader name={tier.name} description={tier.description} />
 
-          <div className="space-y-8">
             {!isEnterprise && (
-              <>
+              <div className="space-y-6">
                 <ClientSelector tier={tier} clientCount={clientCount} onClientCountChange={onClientCountChange} highlighted={tier.highlighted} />
-                <PricingAmount price={price} billingCycle={billingCycle} />
-              </>
+                <PricingAmount price={price} />
+              </div>
             )}
-          </div>
 
-          <div>
-            <PricingCTA 
-              buttonText={tier.buttonText} 
-              highlighted={tier.highlighted} 
-              isEnterprise={isEnterprise} 
-            />
-          </div>
+            <div className="mt-6">
+              <PricingCTA 
+                buttonText={tier.buttonText} 
+                highlighted={tier.highlighted} 
+                isEnterprise={isEnterprise} 
+              />
+            </div>
 
-          <PricingFeatures 
-            features={tier.features} 
-            planName={tier.name} 
-            isEnterprise={isEnterprise} 
-          />
+            <div className="mt-8">
+              <PricingFeatures 
+                features={tier.features} 
+                planName={tier.name}
+                clientCount={clientCount}
+                isEnterprise={isEnterprise}
+              />
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>

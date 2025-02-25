@@ -1,11 +1,9 @@
 "use client"
 
-import type React from "react"
-
-import { memo, useCallback } from "react"
-import { Input } from "@/components/ui/input"
+import { memo, useCallback, useState, useEffect } from "react"
+import type { ChangeEvent } from "react"
 import { Slider } from "@/components/ui/slider"
-import type { PricingTier, BillingCycle } from "@/types/pricing"
+import type { PricingTier } from "@/types/pricing"
 import { cn } from "@/lib/utils"
 
 interface ClientSelectorProps {
@@ -26,20 +24,49 @@ const NumberInput = memo(function NumberInput({
 }: {
   id: string
   value: number
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
   min: number
   max: number
   highlighted?: boolean
   name: string
 }) {
+  const [localValue, setLocalValue] = useState(value)
+  
+  useEffect(() => {
+    setLocalValue(value)
+  }, [value])
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value
+    setLocalValue(Number(newValue))
+    onChange(event)
+  }
+
+  const handleBlur = () => {
+    // Ensure the value is within bounds when leaving the input
+    const numValue = Number(localValue)
+    if (!isNaN(numValue)) {
+      const clampedValue = Math.min(Math.max(numValue, min), max)
+      if (clampedValue !== localValue) {
+        setLocalValue(clampedValue)
+        // Create a synthetic event to trigger the onChange
+        const event = {
+          target: { value: String(clampedValue) }
+        } as ChangeEvent<HTMLInputElement>
+        onChange(event)
+      }
+    }
+  }
+
   return (
-    <Input
+    <input
       id={id}
       type="number"
-      value={value}
-      onChange={onChange}
+      value={localValue}
+      onChange={handleChange}
+      onBlur={handleBlur}
       className={cn(
-        "w-[4.5rem] h-11 font-inter text-center text-3xl font-bold rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600 [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:ml-2 [&::-webkit-outer-spin-button]:ml-2",
+        "w-[5.25rem] h-11 font-lexend text-center text-lg font-bold rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600 [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:ml-1.5 [&::-webkit-outer-spin-button]:ml-1.5 px-3",
         highlighted
           ? "bg-white text-blue-700 border-blue-200 hover:border-blue-300"
           : "border-neutral-200 text-neutral-700 hover:border-neutral-300"
@@ -62,7 +89,7 @@ const ClientLabel = memo(function ClientLabel({
     <label 
       htmlFor={htmlFor} 
       className={cn(
-        "text-sm font-medium font-inter block mb-3",
+        "text-base font-semibold font-lexend block mb-3",
         highlighted ? "text-blue-700" : "text-neutral-700"
       )}
     >
@@ -78,8 +105,15 @@ export const ClientSelector = memo(function ClientSelector({
   highlighted,
 }: ClientSelectorProps) {
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number.parseInt(event.target.value, 10)
+    // Always use the actual input value, don't parse until we need to
+    const inputValue = event.target.value
+    
+    // If empty, don't do anything
+    if (inputValue === '') return
+    
+    const value = Number.parseInt(inputValue, 10)
     if (!isNaN(value)) {
+      // Simple clamping between min and max
       const clampedValue = Math.min(Math.max(value, tier.minClients), tier.maxClients)
       onClientCountChange(clampedValue)
     }

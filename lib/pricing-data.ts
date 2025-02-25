@@ -11,11 +11,11 @@ export const pricingTiers: PricingTier[] = [
     buttonText: "TRY IT FREE",
     features: [
       { text: "User Limits: Up to 5 agency users" },
+      { text: "Oviond AI Assistant" },
+      { text: "Design Tools: Basic Theme Builder" },
       { text: "Dashboards: Unlimited Custom Dashboards" },
       { text: "Reporting: Unlimited Reporting Projects" },
       { text: "Data Access: All Data Sources" },
-      { text: "Oviond AI Assistant" },
-      { text: "Design Tools: Basic Theme Builder" },
     ],
   },
   {
@@ -28,6 +28,7 @@ export const pricingTiers: PricingTier[] = [
     buttonText: "TRY IT FREE",
     highlighted: true,
     features: [
+      { text: "Starter Plan features, plus:" },
       { text: "User Limits: Unlimited agency users" },
       { text: "AI Assistance: Oviond AI Assistant Bring your Own API Key" },
       { text: "Design Tools: Advanced Theme Builder" },

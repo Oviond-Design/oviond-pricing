@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "typecheck": "tsc --noEmit",
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "@radix-ui/react-slider": "^1.1.2",

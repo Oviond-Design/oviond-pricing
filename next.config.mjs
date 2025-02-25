@@ -6,7 +6,10 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
-  transpilePackages: ["@radix-ui/react-tabs"],
+  transpilePackages: ["@radix-ui/react-tabs", "@radix-ui/react-slider"],
+  experimental: {
+    optimizeCss: true
+  }
 };
 
 export default nextConfig;

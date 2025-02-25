@@ -8,9 +8,6 @@ const config: Config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
-  future: {
-    hoverOnlyWhenSupported: true,
-  },
   plugins: [require("tailwindcss-animate")],
   theme: {
   	extend: {

@@ -6,14 +6,7 @@ const config = {
     ...(process.env.NODE_ENV === 'production'
       ? {
           'cssnano': {
-            preset: [
-              'advanced',
-              {
-                discardComments: { removeAll: true },
-                colormin: false,
-                reduceIdents: false
-              }
-            ]
+            preset: 'default'
           }
         }
       : {})

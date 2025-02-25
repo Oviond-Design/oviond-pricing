@@ -11,6 +11,25 @@ const config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        'focus-pulse': {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.1)', opacity: '0.9' },
+        },
+        'focus-pulse-active': {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.15)', opacity: '0.85' },
+        },
+        'constant-pulse': {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.15)', opacity: '0.85' },
+        },
+      },
+      animation: {
+        'focus-pulse': 'focus-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'focus-pulse-active': 'focus-pulse-active 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'constant-pulse': 'constant-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

@@ -21,23 +21,23 @@ const Slider = React.forwardRef<
   >
     <SliderPrimitive.Track
       className={cn(
-        "relative h-2 w-full grow overflow-hidden rounded-full",
-        highlighted ? "bg-blue-100/50" : "bg-neutral-100",
+        "relative h-3 w-full grow overflow-hidden rounded-full",
+        highlighted ? "bg-white/80" : "bg-neutral-100",
       )}
     >
       <SliderPrimitive.Range
         className={cn(
           "absolute h-full transition-colors",
-          highlighted ? "bg-blue-700" : "bg-blue-600/90",
+          "bg-[#2f45ff]"
         )}
       />
     </SliderPrimitive.Track>
     <SliderPrimitive.Thumb
       className={cn(
-        "block h-5 w-5 rounded-full border-2 shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600 disabled:pointer-events-none disabled:opacity-50",
+        "block h-6 w-6 rounded-full border-[3px] shadow-md transition-all outline-none disabled:pointer-events-none disabled:opacity-50",
         highlighted
-          ? "bg-white border-blue-700 hover:border-blue-800 hover:scale-110"
-          : "bg-white border-blue-600 hover:border-blue-700 hover:scale-110",
+          ? "bg-white border-[#0c0eff] hover:border-opacity-90 hover:scale-110 animate-constant-pulse ring-2 ring-offset-2 ring-[#0c0eff]"
+          : "bg-white border-[#0c0eff] hover:border-opacity-90 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0c0eff] focus-visible:animate-focus-pulse",
       )}
     />
   </SliderPrimitive.Root>

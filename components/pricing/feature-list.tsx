@@ -17,7 +17,7 @@ export const FeatureList = memo(function FeatureList({
               aria-hidden="true"
               strokeWidth={2.5}
             />
-            <span className="text-sm text-neutral-600 font-inter leading-relaxed">
+            <span className="text-[15px] text-neutral-600 font-inter leading-relaxed font-medium">
               {feature.text}
             </span>
           </li>

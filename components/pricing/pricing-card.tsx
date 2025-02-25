@@ -24,7 +24,7 @@ const PricingHeader = memo(function PricingHeader({
 }) {
   return (
     <div>
-      <h3 className="text-2xl font-bold text-neutral-900 font-lexend tracking-tight">
+      <h3 className="text-[28px] font-bold text-neutral-900 font-lexend tracking-tight leading-tight">
         {name}
       </h3>
       <p className="text-neutral-600 mt-2.5 font-inter text-base font-medium leading-normal max-w-[280px]">

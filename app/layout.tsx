@@ -24,8 +24,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${lexend.variable} font-inter`}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body
+        className={`${inter.variable} ${lexend.variable} font-inter antialiased bg-background min-h-screen`}
+      >
+        {children}
+      </body>
     </html>
   )
 }

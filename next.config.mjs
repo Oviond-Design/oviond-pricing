@@ -8,7 +8,7 @@ const nextConfig = {
   },
   transpilePackages: ["@radix-ui/react-tabs", "@radix-ui/react-slider"],
   experimental: {
-    optimizeCss: true
+    optimizeCss: false // Disable experimental CSS optimization
   }
 };
 

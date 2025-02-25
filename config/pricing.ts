@@ -1,8 +1,8 @@
-import type { PricingTier } from "@/types"
+import type { PricingTier } from "@/types";
 
-export const ANNUAL_DISCOUNT = 0.8 // 20% discount
-export const CONTACT_URL = "https://www.oviond.com/contact/"
-export const SIGNUP_URL = "https://v2.oviond.com/signup"
+export const ANNUAL_DISCOUNT = 0.8; // 20% discount
+export const CONTACT_URL = "https://www.oviond.com/contact/";
+export const SIGNUP_URL = "https://v2.oviond.com/signup";
 
 export const pricingTiers: PricingTier[] = [
   {
@@ -42,7 +42,8 @@ export const pricingTiers: PricingTier[] = [
   },
   {
     name: "Enterprise Plan",
-    description: "Tailored for large agencies managing 100+ to thousands of clients.",
+    description:
+      "Tailored for large agencies managing 100+ to thousands of clients.",
     minClients: 100,
     maxClients: 1000,
     basePrice: 0,
@@ -55,5 +56,4 @@ export const pricingTiers: PricingTier[] = [
       { text: "Custom Integrations" },
     ],
   },
-]
-
+];

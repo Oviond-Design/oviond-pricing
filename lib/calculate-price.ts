@@ -1,5 +1,5 @@
-import type { PricingTier, BillingCycle } from "@/types/pricing"
-import { ANNUAL_DISCOUNT } from "./constants"
+import type { PricingTier, BillingCycle } from "@/types/pricing";
+import { ANNUAL_DISCOUNT } from "./constants";
 
 function calculateStarterPrice(clients: number): number {
   // Linear scaling from 1-19 clients
@@ -9,15 +9,15 @@ function calculateStarterPrice(clients: number): number {
   const maxClients = 19;
   const minPrice = 9;
   const maxPrice = 119;
-  
+
   // Ensure clients is within bounds
   const clampedClients = Math.min(Math.max(clients, minClients), maxClients);
-  
+
   // Calculate price using linear interpolation
   const range = maxClients - minClients;
   const priceRange = maxPrice - minPrice;
   const clientsAboveMin = clampedClients - minClients;
-  
+
   return Math.round(minPrice + (priceRange * clientsAboveMin) / range);
 }
 
@@ -26,26 +26,33 @@ function calculateLinearPrice(clients: number, tier: PricingTier): number {
   if (tier.name === "Starter Plan") {
     return calculateStarterPrice(clients);
   }
-  
+
   // Regular linear pricing for other plans
-  const clampedClients = Math.min(Math.max(clients, tier.minClients), tier.maxClients)
-  const range = tier.maxClients - tier.minClients
-  const priceRange = tier.maxPrice - tier.basePrice
-  const clientsAboveMin = clampedClients - tier.minClients
-  return Math.round(tier.basePrice + (priceRange * clientsAboveMin) / range)
+  const clampedClients = Math.min(
+    Math.max(clients, tier.minClients),
+    tier.maxClients,
+  );
+  const range = tier.maxClients - tier.minClients;
+  const priceRange = tier.maxPrice - tier.basePrice;
+  const clientsAboveMin = clampedClients - tier.minClients;
+  return Math.round(tier.basePrice + (priceRange * clientsAboveMin) / range);
 }
 
-export function calculatePrice(tier: PricingTier, clients: number, billingCycle: BillingCycle): number {
-  if (tier.basePrice === 0) return 0 // Enterprise Plan has no pricing
+export function calculatePrice(
+  tier: PricingTier,
+  clients: number,
+  billingCycle: BillingCycle,
+): number {
+  if (tier.basePrice === 0) return 0; // Enterprise Plan has no pricing
 
-  const monthlyPrice = calculateLinearPrice(clients, tier)
-  
+  const monthlyPrice = calculateLinearPrice(clients, tier);
+
   if (billingCycle === "yearly") {
     // Apply 20% discount for annual billing
-    return Math.round(monthlyPrice * ANNUAL_DISCOUNT)
+    return Math.round(monthlyPrice * ANNUAL_DISCOUNT);
   }
-  
-  return monthlyPrice
+
+  return monthlyPrice;
 }
 
 export const pricingTiers: PricingTier[] = [
@@ -86,7 +93,8 @@ export const pricingTiers: PricingTier[] = [
   },
   {
     name: "Enterprise Plan",
-    description: "Tailored for large agencies managing 100+ to thousands of clients.",
+    description:
+      "Tailored for large agencies managing 100+ to thousands of clients.",
     minClients: 100,
     maxClients: 1000,
     basePrice: 0,
@@ -99,5 +107,4 @@ export const pricingTiers: PricingTier[] = [
       { text: "Custom Integrations" },
     ],
   },
-]
-
+];

@@ -1,27 +1,36 @@
-"use client"
+"use client";
 
-import { useState, useCallback } from "react"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PricingCard } from "./PricingCard"
-import { pricingTiers } from "@/lib/pricing-data"
-import type { BillingCycle } from "@/types/pricing"
+import { useState, useCallback } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PricingCard } from "./PricingCard";
+import { pricingTiers } from "@/lib/pricing-data";
+import type { BillingCycle } from "@/types/pricing";
 
 export function PricingTable() {
-  const [billingCycle, setBillingCycle] = useState<BillingCycle>("monthly")
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>("monthly");
   const [clientCounts, setClientCounts] = useState(() =>
-    Object.fromEntries(pricingTiers.map((tier) => [tier.name, tier.minClients])),
-  )
+    Object.fromEntries(
+      pricingTiers.map((tier) => [tier.name, tier.minClients]),
+    ),
+  );
 
-  const handleClientCountChange = useCallback((tierName: string, value: number) => {
-    setClientCounts((prev) => ({
-      ...prev,
-      [tierName]: value,
-    }))
-  }, [])
+  const handleClientCountChange = useCallback(
+    (tierName: string, value: number) => {
+      setClientCounts((prev) => ({
+        ...prev,
+        [tierName]: value,
+      }));
+    },
+    [],
+  );
 
   return (
     <div className="w-full bg-white">
-      <Tabs defaultValue="monthly" className="w-full" onValueChange={(value) => setBillingCycle(value as BillingCycle)}>
+      <Tabs
+        defaultValue="monthly"
+        className="w-full"
+        onValueChange={(value) => setBillingCycle(value as BillingCycle)}
+      >
         <div className="flex justify-center mb-8">
           <TabsList className="grid w-[240px] grid-cols-2">
             <TabsTrigger value="monthly" className="font-lexend">
@@ -41,13 +50,14 @@ export function PricingTable() {
                 tier={tier}
                 billingCycle={billingCycle}
                 clientCount={clientCounts[tier.name]}
-                onClientCountChange={(value) => handleClientCountChange(tier.name, value)}
+                onClientCountChange={(value) =>
+                  handleClientCountChange(tier.name, value)
+                }
               />
             ))}
           </div>
         </div>
       </Tabs>
     </div>
-  )
+  );
 }
-

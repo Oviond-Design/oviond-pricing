@@ -22,12 +22,14 @@ An interactive pricing table component built with Next.js, Tailwind CSS, and Rad
 ## Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/oviondpricing.git
 cd oviondpricing
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 # or
@@ -35,6 +37,7 @@ yarn install
 ```
 
 3. Run the development server:
+
 ```bash
 npm run dev
 # or

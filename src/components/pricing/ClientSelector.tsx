@@ -1,13 +1,13 @@
-import { memo, type ChangeEvent } from "react"
-import { Input } from "@/components/ui/input"
-import { Slider } from "@/components/ui/slider"
-import type { PricingTier } from "@/types/pricing"
+import { memo, type ChangeEvent } from "react";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import type { PricingTier } from "@/types/pricing";
 
 interface ClientSelectorProps {
-  tier: PricingTier
-  clientCount: number
-  onClientCountChange: (value: number) => void
-  highlighted?: boolean
+  tier: PricingTier;
+  clientCount: number;
+  onClientCountChange: (value: number) => void;
+  highlighted?: boolean;
 }
 
 export const ClientSelector = memo(function ClientSelector({
@@ -17,21 +17,27 @@ export const ClientSelector = memo(function ClientSelector({
   highlighted,
 }: ClientSelectorProps) {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    const numValue = Number.parseInt(value, 10)
+    const value = e.target.value;
+    const numValue = Number.parseInt(value, 10);
     if (!isNaN(numValue)) {
-      const clampedValue = Math.min(Math.max(numValue, tier.minClients), tier.maxClients)
-      onClientCountChange(clampedValue)
+      const clampedValue = Math.min(
+        Math.max(numValue, tier.minClients),
+        tier.maxClients,
+      );
+      onClientCountChange(clampedValue);
     }
-  }
+  };
 
   const handleSliderChange = (value: number[]) => {
-    onClientCountChange(value[0])
-  }
+    onClientCountChange(value[0]);
+  };
 
   return (
     <div className="mt-6">
-      <label htmlFor={`clients-${tier.name}`} className="text-sm font-medium text-neutral-700 font-lexend">
+      <label
+        htmlFor={`clients-${tier.name}`}
+        className="text-sm font-medium text-neutral-700 font-lexend"
+      >
         Select Number of Clients
       </label>
       <div className="flex items-center gap-4 mt-2">
@@ -56,6 +62,5 @@ export const ClientSelector = memo(function ClientSelector({
         />
       </div>
     </div>
-  )
-})
-
+  );
+});

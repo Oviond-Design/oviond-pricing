@@ -30,31 +30,49 @@ const NumberInput = memo(function NumberInput({
   highlighted?: boolean;
   name: string;
 }) {
-  const [localValue, setLocalValue] = useState(value);
+  // Track both the display value (string) and numeric value separately
+  const [displayValue, setDisplayValue] = useState(String(value));
+  const [numericValue, setNumericValue] = useState(value);
 
+  // Update local state when parent value changes
   useEffect(() => {
-    setLocalValue(value);
+    setDisplayValue(String(value));
+    setNumericValue(value);
   }, [value]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
-    setLocalValue(Number(newValue));
-    onChange(event);
+    setDisplayValue(newValue);
+
+    // Only update numeric value and notify parent if it's a valid number
+    const parsed = Number(newValue);
+    if (!isNaN(parsed)) {
+      setNumericValue(parsed);
+      onChange(event);
+    }
   };
 
   const handleBlur = () => {
-    // Ensure the value is within bounds when leaving the input
-    const numValue = Number(localValue);
-    if (!isNaN(numValue)) {
-      const clampedValue = Math.min(Math.max(numValue, min), max);
-      if (clampedValue !== localValue) {
-        setLocalValue(clampedValue);
-        // Create a synthetic event to trigger the onChange
-        const event = {
-          target: { value: String(clampedValue) },
-        } as ChangeEvent<HTMLInputElement>;
-        onChange(event);
-      }
+    const parsed = Number(displayValue);
+    
+    // If not a valid number, revert to last valid value
+    if (isNaN(parsed)) {
+      setDisplayValue(String(numericValue));
+      return;
+    }
+
+    // Clamp value if outside bounds
+    const clampedValue = Math.min(Math.max(parsed, min), max);
+    
+    // Update display and numeric values
+    setDisplayValue(String(clampedValue));
+    setNumericValue(clampedValue);
+
+    // Notify parent if value changed
+    if (clampedValue !== parsed) {
+      onChange({
+        target: { value: String(clampedValue) }
+      } as ChangeEvent<HTMLInputElement>);
     }
   };
 
@@ -108,27 +126,16 @@ export const ClientSelector = memo(function ClientSelector({
 }: ClientSelectorProps) {
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const inputValue = event.target.value;
-
-      // If empty, don't do anything
-      if (inputValue === "") return;
-
-      const value = Number.parseInt(inputValue, 10);
+      const value = Number(event.target.value);
+      
+      // Only process valid numbers
       if (!isNaN(value)) {
-        // Only clamp if the value is outside the valid range
-        if (value >= tier.minClients && value <= tier.maxClients) {
-          onClientCountChange(value);
-        } else {
-          // If outside range, clamp to min/max
-          const clampedValue = Math.min(
-            Math.max(value, tier.minClients),
-            tier.maxClients,
-          );
-          onClientCountChange(clampedValue);
-        }
+        // Let the NumberInput component handle the display value
+        // We only update the actual state when the value is valid
+        onClientCountChange(value);
       }
     },
-    [tier.minClients, tier.maxClients, onClientCountChange],
+    [onClientCountChange],
   );
 
   const handleSliderChange = useCallback(

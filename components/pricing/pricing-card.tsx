@@ -48,7 +48,7 @@ const PricingAmount = memo(function PricingAmount({
         ${formattedPrice}
       </span>
       <span className="text-base font-medium text-neutral-500 font-lexend ml-0.5 mt-1.5">
-        /Month {billingCycle === "annual" ? "(Billed Annually)" : ""}
+        /Month {billingCycle === "yearly" ? "(Billed Annually)" : ""}
       </span>
     </div>
   );

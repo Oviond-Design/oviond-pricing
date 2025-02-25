@@ -68,8 +68,8 @@ const NumberInput = memo(function NumberInput({
       className={cn(
         "w-[5.25rem] h-11 font-lexend text-center text-lg font-bold rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600 [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:ml-1.5 [&::-webkit-outer-spin-button]:ml-1.5 px-3",
         highlighted
-          ? "bg-white text-blue-700 border-blue-200 hover:border-blue-300"
-          : "border-neutral-200 text-neutral-700 hover:border-neutral-300",
+          ? "bg-white text-neutral-900 border-blue-200 hover:border-blue-300"
+          : "border-neutral-200 text-neutral-900 hover:border-neutral-300",
       )}
       min={min}
       max={max}

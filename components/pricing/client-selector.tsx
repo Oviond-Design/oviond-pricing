@@ -78,6 +78,8 @@ const NumberInput = memo(function NumberInput({
   );
 });
 
+
+
 const ClientLabel = memo(function ClientLabel({
   htmlFor,
   highlighted,
@@ -134,30 +136,35 @@ export const ClientSelector = memo(function ClientSelector({
 
   const inputId = `clients-${tier.name}`;
 
+  const isEnterprise = tier.name === "Enterprise Plan";
+
   return (
     <div>
-      <ClientLabel htmlFor={inputId} highlighted={highlighted} />
-      <div className="flex items-center gap-4">
-        <NumberInput
-          id={inputId}
-          value={clientCount}
-          onChange={handleInputChange}
-          min={tier.minClients}
-          max={tier.maxClients}
-          highlighted={highlighted}
-          name={tier.name}
-        />
-        <Slider
-          value={[clientCount]}
-          onValueChange={handleSliderChange}
-          max={tier.maxClients}
-          min={tier.minClients}
-          step={1}
-          className="flex-1"
-          highlighted={highlighted}
-          aria-label={`Slider for number of clients in ${tier.name}`}
-        />
-      </div>
+      {!isEnterprise && <ClientLabel htmlFor={inputId} highlighted={highlighted} />}
+      {!isEnterprise && (
+        <div className="flex items-center gap-4">
+          <NumberInput
+            id={inputId}
+            value={clientCount}
+            onChange={handleInputChange}
+            min={tier.minClients}
+            max={tier.maxClients}
+            highlighted={highlighted}
+            name={tier.name}
+          />
+          <Slider
+            value={[clientCount]}
+            onValueChange={handleSliderChange}
+            max={tier.maxClients}
+            min={tier.minClients}
+            step={1}
+            className="flex-1"
+            highlighted={highlighted}
+            aria-label={`Slider for number of clients in ${tier.name}`}
+          />
+        </div>
+      )}
+
     </div>
   );
 });

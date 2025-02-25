@@ -1,24 +1,17 @@
-import type { PricingTier, BillingCycle } from "@/types/pricing";
+  import type { PricingTier, BillingCycle } from "@/types/pricing";
 import { ANNUAL_DISCOUNT } from "./constants";
 
 function calculateStarterPrice(clients: number): number {
-  // Linear scaling from 1-19 clients
-  // Starting at $9 for 1 client
-  // Ending at $119 for 19 clients
-  const minClients = 1;
-  const maxClients = 19;
-  const minPrice = 9;
-  const maxPrice = 119;
-
   // Ensure clients is within bounds
-  const clampedClients = Math.min(Math.max(clients, minClients), maxClients);
+  const n = Math.min(Math.max(clients, 1), 19);
 
-  // Calculate price using linear interpolation
-  const range = maxClients - minClients;
-  const priceRange = maxPrice - minPrice;
-  const clientsAboveMin = clampedClients - minClients;
+  // Fixed price tiers for 1-3 clients
+  if (n === 1) return 15;
+  if (n === 2) return 27;
+  if (n === 3) return 39;
 
-  return Math.round(minPrice + (priceRange * clientsAboveMin) / range);
+  // For 4 to 19 clients: Price = $39 + $5 × (n - 3)
+  return 39 + (5 * (n - 3));
 }
 
 function calculateLinearPrice(clients: number, tier: PricingTier): number {
@@ -58,53 +51,52 @@ export function calculatePrice(
 export const pricingTiers: PricingTier[] = [
   {
     name: "Starter Plan",
-    description: "Perfect for small teams managing up to 19 clients.",
+    description: "For small teams managing up to 19 clients. Streamline reporting with essential tools.",
     minClients: 1,
     maxClients: 19,
-    basePrice: 39,
+    basePrice: 15, // Starting price for 1 client
     maxPrice: 119,
-    buttonText: "TRY IT FREE",
+    buttonText: "Start Your Free Trial",
     features: [
-      { text: "User Limits: Up to 5 agency users" },
-      { text: "Dashboards: Unlimited Custom Dashboards" },
-      { text: "Reporting: Unlimited Reporting Projects" },
-      { text: "Data Access: All Data Sources" },
-      { text: "Oviond AI Assistant" },
-      { text: "Design Tools: Basic Theme Builder" },
+      { text: "Collaborate with up to five team members" },
+      { text: "Create custom dashboards for each client" },
+      { text: "Generate unlimited marketing reports" },
+      { text: "Connect to all your data sources" },
+      { text: "Leverage AI for faster insights" },
+      { text: "Customize reports with basic brand tools" },
     ],
   },
   {
     name: "Professional Plan",
-    description: "Ideal for growing teams managing up to 100 clients.",
+    description: "For growing agencies with up to 100 clients. Advanced tools for reporting and branding.",
     minClients: 20,
     maxClients: 100,
     basePrice: 129,
     maxPrice: 449,
-    buttonText: "TRY IT FREE",
+    buttonText: "Start Your Free Trial",
     highlighted: true,
     features: [
-      { text: "User Limits: Unlimited agency users" },
-      { text: "AI Assistance: Oviond AI Assistant Bring your Own API Key" },
-      { text: "Design Tools: Advanced Theme Builder" },
-      { text: "Branding: White Labeling & Custom Domain" },
-      { text: "Support: Dedicated Onboarding Support" },
-      { text: "Account Management: Dedicated Account Manager" },
+      { text: "Unlimited team members for seamless collaboration" },
+      { text: "Complete AI control with bring-your-own-key options" },
+      { text: "Advanced Theme Builder for full brand control per client" },
+      { text: "Custom Domain for branded client experiences" },
+      { text: "Dedicated onboarding support to accelerate setup" },
+      { text: "Dedicated account expert to drive your agency's growth" },
     ],
   },
   {
     name: "Enterprise Plan",
     description:
-      "Tailored for large agencies managing 100+ to thousands of clients.",
+      "For large agencies with 100+ clients. Custom solutions and support for seamless scaling.",
     minClients: 100,
     maxClients: 1000,
     basePrice: 0,
     maxPrice: 0,
-    buttonText: "GET A CUSTOM QUOTE",
+    buttonText: "Get a Custom Quote",
     features: [
-      { text: "Multiple Custom Domains" },
-      { text: "Priority Support" },
-      { text: "Bespoke Support Packages tailored to your agency's needs" },
-      { text: "Custom Integrations" },
+      { text: "Multiple custom domains for branded experiences" },
+      { text: "Exclusive Premium Support, tailored to your agency's unique needs" },
+      { text: "Custom integrations to fit your tech stack" },
     ],
   },
 ];

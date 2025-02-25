@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Check } from "lucide-react";
 interface FeatureListProps {
-  features: Array<{ text: string }>;
+  features: Array<{ text: string | JSX.Element }>;
 }
 
 export const FeatureList = memo(function FeatureList({
@@ -18,19 +18,7 @@ export const FeatureList = memo(function FeatureList({
               strokeWidth={2.5}
             />
             <span className="text-sm text-neutral-600 font-inter leading-relaxed">
-              {feature.text.startsWith("Manage") ? (
-                <>
-                  Manage{" "}
-                  <span className="text-base font-bold">
-                    {feature.text.match(/\d+/)?.[0] || ""}
-                  </span>
-                  {feature.text.slice(
-                    (feature.text.match(/\d+/)?.[0]?.length || 0) + 7,
-                  )}
-                </>
-              ) : (
-                feature.text
-              )}
+              {feature.text}
             </span>
           </li>
         ))}

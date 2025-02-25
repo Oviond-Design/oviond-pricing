@@ -7,5 +7,5 @@ export type PricingTier = {
   maxPrice: number;
   buttonText: string;
   highlighted?: boolean;
-  features: { text: string }[];
+  features: { text: string | JSX.Element }[];
 };

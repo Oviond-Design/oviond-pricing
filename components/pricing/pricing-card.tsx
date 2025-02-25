@@ -82,6 +82,32 @@ const PricingCTA = memo(function PricingCTA({
   );
 });
 
+interface FeatureItemProps {
+  text: string | JSX.Element;
+}
+
+const FeatureItem = memo(function FeatureItem({ text }: FeatureItemProps) {
+  return (
+    <li className="flex items-start gap-2">
+      <div className="h-5 w-5 shrink-0 text-blue-600">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="h-5 w-5"
+        >
+          <path
+            fillRule="evenodd"
+            d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+      <div className="text-base font-medium text-neutral-600">{text}</div>
+    </li>
+  );
+});
+
 const PricingFeatures = memo(function PricingFeatures({
   features,
   planName,
@@ -93,8 +119,12 @@ const PricingFeatures = memo(function PricingFeatures({
   clientCount: number;
   isEnterprise: boolean;
 }) {
+  const clientCountText = isEnterprise
+    ? "Manage reporting for 100+ client accounts"
+    : <span>Manage reporting for <span className="text-[17px] font-bold">{clientCount}</span> client{clientCount === 1 ? "" : "s"}</span>;
+
   const dynamicFeatures = [
-    { text: `Manage ${clientCount} client${clientCount === 1 ? "" : "s"}` },
+    { text: clientCountText },
     ...features,
   ];
 

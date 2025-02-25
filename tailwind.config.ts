@@ -8,7 +8,6 @@ const config: Config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
-  plugins: [require("tailwindcss-animate")],
   theme: {
   	extend: {
   		colors: {

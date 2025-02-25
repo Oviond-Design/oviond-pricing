@@ -76,7 +76,6 @@ export const ClientSelector = memo(function ClientSelector({
   clientCount,
   onClientCountChange,
   highlighted,
-  billingCycle,
 }: ClientSelectorProps) {
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number.parseInt(event.target.value, 10)
@@ -119,4 +118,3 @@ export const ClientSelector = memo(function ClientSelector({
     </div>
   )
 })
-

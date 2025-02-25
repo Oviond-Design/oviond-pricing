@@ -1,4 +1,4 @@
-import { PricingTable } from "@/components/pricing/PricingTable"
+import { PricingTable } from "@/components/pricing/pricing-table"
 
 export const metadata = {
   title: "Pricing Plans",
@@ -13,4 +13,3 @@ export default function PricingPage() {
     </div>
   )
 }
-

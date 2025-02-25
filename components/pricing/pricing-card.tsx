@@ -77,7 +77,7 @@ const PricingFeatures = memo(function PricingFeatures({
   planName, 
   isEnterprise 
 }: { 
-  features: Array<{ text: string }>
+  features: Array<{ text: string}>
   planName: string
   isEnterprise: boolean 
 }) {
@@ -116,13 +116,7 @@ export const PricingCard = memo(function PricingCard({
           <div className="space-y-8">
             {!isEnterprise && (
               <>
-                <ClientSelector
-                  tier={tier}
-                  clientCount={clientCount}
-                  onClientCountChange={onClientCountChange}
-                  highlighted={tier.highlighted}
-                  billingCycle={billingCycle}
-                />
+                <ClientSelector tier={tier} clientCount={clientCount} onClientCountChange={onClientCountChange} highlighted={tier.highlighted} />
                 <PricingAmount price={price} billingCycle={billingCycle} />
               </>
             )}
@@ -146,4 +140,3 @@ export const PricingCard = memo(function PricingCard({
     </Card>
   )
 })
-

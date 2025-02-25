@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ClientSelector } from "./client-selector";
@@ -86,6 +86,25 @@ const PricingCTA = memo(function PricingCTA({
 
 
 
+const FeatureHeader = memo(function FeatureHeader({ planName }: { planName: string }) {
+  const headerText = useMemo(() => {
+    switch (planName) {
+      case "Enterprise Plan":
+        return "Professional Plan features, plus:";
+      case "Professional Plan":
+        return "Starter Plan features, plus:";
+      default:
+        return "What's Included";
+    }
+  }, [planName]);
+
+  return (
+    <p className="text-sm font-bold text-neutral-900 font-lexend mb-5">
+      {headerText}
+    </p>
+  );
+});
+
 const PricingFeatures = memo(function PricingFeatures({
   features,
   planName,
@@ -101,20 +120,14 @@ const PricingFeatures = memo(function PricingFeatures({
     ? "Manage reporting for 100+ client accounts"
     : <span>Manage reporting for <span className="text-[17px] font-bold">{clientCount}</span> client{clientCount === 1 ? "" : "s"}</span>;
 
-  const dynamicFeatures = [
+  const dynamicFeatures = useMemo(() => [
     { text: clientCountText },
     ...features,
-  ];
+  ], [clientCountText, features]);
 
   return (
     <div className="flex-1">
-      <p className="text-sm font-bold text-neutral-900 font-lexend mb-5">
-        {planName === "Enterprise Plan"
-          ? "Professional Plan features, plus:"
-          : planName === "Professional Plan"
-          ? "Starter Plan features, plus:"
-          : "What's Included"}
-      </p>
+      <FeatureHeader planName={planName} />
       <FeatureList features={isEnterprise ? features : dynamicFeatures} />
     </div>
   );

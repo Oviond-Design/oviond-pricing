@@ -36,8 +36,10 @@ const PricingHeader = memo(function PricingHeader({
 
 const PricingAmount = memo(function PricingAmount({
   price,
+  billingCycle,
 }: {
   price: number;
+  billingCycle: BillingCycle;
 }) {
   const formattedPrice = new Intl.NumberFormat("en-US").format(price);
   return (
@@ -46,7 +48,7 @@ const PricingAmount = memo(function PricingAmount({
         ${formattedPrice}
       </span>
       <span className="text-base font-medium text-neutral-500 font-lexend ml-0.5 mt-1.5">
-        /mo
+        /Month {billingCycle === "annual" ? "(Billed Annually)" : ""}
       </span>
     </div>
   );
@@ -147,7 +149,7 @@ export const PricingCard = memo(function PricingCard({
                   onClientCountChange={onClientCountChange}
                   highlighted={tier.highlighted}
                 />
-                <PricingAmount price={price} />
+                <PricingAmount price={price} billingCycle={billingCycle} />
               </div>
             )}
 

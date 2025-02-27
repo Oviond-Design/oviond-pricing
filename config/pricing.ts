@@ -15,7 +15,7 @@ export const pricingTiers: PricingTier[] = [
     buttonText: "Start Your Free Trial",
     features: [
       { text: "Collaborate with up to five team members" },
-      { text: "Create custom dashboards for each client" },
+      { text: "Create unlimited custom dashboards for each client" },
       { text: "Generate unlimited marketing reports" },
       { text: "Connect to all your data sources" },
       { text: "Leverage AI for faster insights" },

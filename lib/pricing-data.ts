@@ -2,7 +2,7 @@ import type { PricingTier } from "@/types/pricing";
 
 export const pricingTiers: PricingTier[] = [
   {
-    name: "Professional Plan",
+    name: "Agency Plan",
     description: "For growing agencies with up to 100 clients. Advanced tools for reporting and branding.",
     minClients: 5,
     maxClients: 100,

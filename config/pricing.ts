@@ -6,7 +6,7 @@ export const SIGNUP_URL = "https://v2.oviond.com/signup";
 
 export const pricingTiers: PricingTier[] = [
   {
-    name: "Professional Plan",
+    name: "Agency Plan",
     description: "For growing agencies with up to 100 clients. Advanced tools for reporting and branding.",
     minClients: 5,
     maxClients: 100,

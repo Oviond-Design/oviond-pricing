@@ -38,16 +38,10 @@ const PricingGrid = memo(function PricingGrid({
   onClientCountChange: (tierName: string, value: number) => void;
 }) {
   return (
-    <div className="max-w-[1240px] mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        {pricingTiers.map((tier, index) => (
-          <div
-            key={tier.name}
-            className={cn(
-              "md:col-span-4",
-              index === 1 && "md:col-span-4 md:-mt-6 md:-mb-6 md:py-6",
-            )}
-          >
+    <div className="max-w-[1000px] mx-auto px-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {pricingTiers.map((tier) => (
+          <div key={tier.name} className="h-full">
             <PricingCard
               tier={tier}
               billingCycle={billingCycle}

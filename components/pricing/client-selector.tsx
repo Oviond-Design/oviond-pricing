@@ -61,15 +61,19 @@ const NumberInput = memo(function NumberInput({
       return;
     }
 
+    // Round to nearest 5 (for step of 5)
+    const step = 5;
+    const rounded = Math.round(parsed / step) * step;
+
     // Clamp value if outside bounds
-    const clampedValue = Math.min(Math.max(parsed, min), max);
+    const clampedValue = Math.min(Math.max(rounded, min), max);
     
     // Update display and numeric values
     setDisplayValue(String(clampedValue));
     setNumericValue(clampedValue);
 
     // Notify parent if value changed
-    if (clampedValue !== parsed) {
+    if (clampedValue !== numericValue) {
       onChange({
         target: { value: String(clampedValue) }
       } as ChangeEvent<HTMLInputElement>);
@@ -91,6 +95,7 @@ const NumberInput = memo(function NumberInput({
       )}
       min={min}
       max={max}
+      step={5}
       aria-label={`Number of clients for ${name}`}
     />
   );

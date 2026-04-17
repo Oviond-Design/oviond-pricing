@@ -1,24 +1,33 @@
   import type { PricingTier, BillingCycle } from "@/types/pricing";
 import { ANNUAL_DISCOUNT } from "./constants";
 
+// Fixed pricing tiers - discrete steps with exact prices
+export const CLIENT_STEPS = [5, 10, 15, 20, 25, 30, 40, 50, 75, 100] as const;
+
+const PRICE_MAP: Record<number, number> = {
+  5: 59,
+  10: 99,
+  15: 139,
+  20: 179,
+  25: 219,
+  30: 259,
+  40: 339,
+  50: 419,
+  75: 599,
+  100: 749,
+};
+
 function calculateProfessionalPrice(clients: number): number {
-  // Clients come in increments of 5: 5, 10, 15, ... 100
-  // Prices: 5 clients = $49, 100 clients = $490
-  // Total of 20 steps (5 to 100), price increases linearly
+  // Look up the exact price from the price map
+  if (clients in PRICE_MAP) {
+    return PRICE_MAP[clients];
+  }
   
-  const minClients = 5;
-  const maxClients = 100;
-  const basePrice = 49;
-  const maxPrice = 490;
-  
-  // Clamp clients to valid range
-  const clampedClients = Math.min(Math.max(clients, minClients), maxClients);
-  
-  // Calculate price based on position in range
-  // (clients - 5) / (100 - 5) = position ratio
-  // price = 49 + (490 - 49) * ratio
-  const ratio = (clampedClients - minClients) / (maxClients - minClients);
-  return Math.round(basePrice + (maxPrice - basePrice) * ratio);
+  // Fallback: find the closest valid step and return its price
+  const closestStep = CLIENT_STEPS.reduce((prev, curr) =>
+    Math.abs(curr - clients) < Math.abs(prev - clients) ? curr : prev
+  );
+  return PRICE_MAP[closestStep];
 }
 
 function calculateLinearPrice(clients: number, tier: PricingTier): number {
@@ -61,8 +70,8 @@ export const pricingTiers: PricingTier[] = [
     description: "For growing agencies with up to 100 clients. Advanced tools for reporting and branding.",
     minClients: 5,
     maxClients: 100,
-    basePrice: 49,
-    maxPrice: 490,
+    basePrice: 59,
+    maxPrice: 749,
     buttonText: "Start Your Free Trial",
     highlighted: true,
     features: [

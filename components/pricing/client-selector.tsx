@@ -5,6 +5,7 @@ import type { ChangeEvent } from "react";
 import { Slider } from "@/components/ui/slider";
 import type { PricingTier } from "@/types/pricing";
 import { cn } from "@/lib/utils";
+import { CLIENT_STEPS } from "@/lib/calculate-price";
 
 interface ClientSelectorProps {
   tier: PricingTier;
@@ -40,21 +41,26 @@ const NumberInput = memo(function NumberInput({
     setNumericValue(value);
   }, [value]);
 
+  // Find the closest valid step from CLIENT_STEPS
+  const findClosestStep = (value: number): number => {
+    return CLIENT_STEPS.reduce((prev, curr) =>
+      Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
+    );
+  };
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     const parsed = Number(newValue);
     
     // Only update if it's a valid number
     if (!isNaN(parsed)) {
-      // Enforce step of 5 - round to nearest valid step value
-      const step = 5;
-      const rounded = Math.round(parsed / step) * step;
-      const clamped = Math.min(Math.max(rounded, min), max);
+      // Find closest valid step value
+      const closestStep = findClosestStep(parsed);
       
-      setDisplayValue(String(clamped));
-      setNumericValue(clamped);
+      setDisplayValue(String(closestStep));
+      setNumericValue(closestStep);
       onChange({
-        target: { value: String(clamped) }
+        target: { value: String(closestStep) }
       } as ChangeEvent<HTMLInputElement>);
     } else {
       // Allow typing non-numeric temporarily (will be fixed on blur)
@@ -71,21 +77,17 @@ const NumberInput = memo(function NumberInput({
       return;
     }
 
-    // Round to nearest 5 (for step of 5)
-    const step = 5;
-    const rounded = Math.round(parsed / step) * step;
-
-    // Clamp value if outside bounds
-    const clampedValue = Math.min(Math.max(rounded, min), max);
+    // Find closest valid step value
+    const closestStep = findClosestStep(parsed);
     
     // Update display and numeric values
-    setDisplayValue(String(clampedValue));
-    setNumericValue(clampedValue);
+    setDisplayValue(String(closestStep));
+    setNumericValue(closestStep);
 
     // Notify parent if value changed
-    if (clampedValue !== numericValue) {
+    if (closestStep !== numericValue) {
       onChange({
-        target: { value: String(clampedValue) }
+        target: { value: String(closestStep) }
       } as ChangeEvent<HTMLInputElement>);
     }
   };
@@ -139,14 +141,23 @@ export const ClientSelector = memo(function ClientSelector({
   onClientCountChange,
   highlighted,
 }: ClientSelectorProps) {
+  // Convert client count to step index for the slider
+  const clientToIndex = (clients: number): number => {
+    const index = CLIENT_STEPS.indexOf(clients as typeof CLIENT_STEPS[number]);
+    return index >= 0 ? index : 0;
+  };
+
+  // Convert step index back to client count
+  const indexToClient = (index: number): number => {
+    return CLIENT_STEPS[index] ?? CLIENT_STEPS[0];
+  };
+
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = Number(event.target.value);
       
       // Only process valid numbers
       if (!isNaN(value)) {
-        // Let the NumberInput component handle the display value
-        // We only update the actual state when the value is valid
         onClientCountChange(value);
       }
     },
@@ -155,7 +166,9 @@ export const ClientSelector = memo(function ClientSelector({
 
   const handleSliderChange = useCallback(
     (value: number[]) => {
-      onClientCountChange(value[0]);
+      // Convert index to actual client count
+      const clientCount = indexToClient(value[0]);
+      onClientCountChange(clientCount);
     },
     [onClientCountChange],
   );
@@ -179,11 +192,11 @@ export const ClientSelector = memo(function ClientSelector({
             name={tier.name}
           />
           <Slider
-            value={[clientCount]}
+            value={[clientToIndex(clientCount)]}
             onValueChange={handleSliderChange}
-            max={tier.maxClients}
-            min={tier.minClients}
-            step={tier.name === "Professional Plan" ? 5 : 1}
+            max={CLIENT_STEPS.length - 1}
+            min={0}
+            step={1}
             className="flex-1"
             highlighted={highlighted}
             aria-label={`Slider for number of clients in ${tier.name}`}

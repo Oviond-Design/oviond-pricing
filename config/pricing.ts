@@ -10,8 +10,8 @@ export const pricingTiers: PricingTier[] = [
     description: "For growing agencies with up to 100 clients. Advanced tools for reporting and branding.",
     minClients: 5,
     maxClients: 100,
-    basePrice: 49,
-    maxPrice: 490,
+    basePrice: 59,
+    maxPrice: 749,
     buttonText: "Start Your Free Trial",
     highlighted: true,
     features: [

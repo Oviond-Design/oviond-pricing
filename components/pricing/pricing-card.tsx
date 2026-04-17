@@ -91,8 +91,6 @@ const FeatureHeader = memo(function FeatureHeader({ planName }: { planName: stri
     switch (planName) {
       case "Enterprise Plan":
         return "Professional Plan features, plus:";
-      case "Professional Plan":
-        return "Starter Plan features, plus:";
       default:
         return "What's Included";
     }

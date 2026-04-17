@@ -67,10 +67,7 @@ export function PricingTable() {
   const [billingCycle, setBillingCycle] = useState<BillingCycle>("monthly");
   const [clientCounts, setClientCounts] = useState(() =>
     Object.fromEntries(
-      pricingTiers.map((tier) => [
-        tier.name,
-        tier.name === "Professional Plan" ? 20 : tier.minClients,
-      ]),
+      pricingTiers.map((tier) => [tier.name, tier.minClients]),
     ),
   );
 

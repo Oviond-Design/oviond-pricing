@@ -1,59 +1,43 @@
 import { calculatePrice, pricingTiers } from "./calculate-price";
 
-describe("Basic Plan Pricing", () => {
-  const basicPlan = pricingTiers[0];
+describe("Professional Plan Pricing", () => {
+  const professionalPlan = pricingTiers[0];
 
   test("monthly pricing at key points", () => {
-    expect(calculatePrice(basicPlan, 20, "monthly")).toBe(29);
-    expect(calculatePrice(basicPlan, 50, "monthly")).toBe(49);
-    expect(calculatePrice(basicPlan, 100, "monthly")).toBe(99);
+    // 5 clients = $49, 100 clients = $490
+    expect(calculatePrice(professionalPlan, 5, "monthly")).toBe(49);
+    expect(calculatePrice(professionalPlan, 50, "monthly")).toBe(258); // Midpoint-ish
+    expect(calculatePrice(professionalPlan, 100, "monthly")).toBe(490);
 
-    // Test some intermediate values
-    expect(calculatePrice(basicPlan, 35, "monthly")).toBe(39);
-    expect(calculatePrice(basicPlan, 75, "monthly")).toBe(79);
+    // Test some intermediate values (steps of 5)
+    expect(calculatePrice(professionalPlan, 10, "monthly")).toBe(72);
+    expect(calculatePrice(professionalPlan, 25, "monthly")).toBe(142);
+    expect(calculatePrice(professionalPlan, 75, "monthly")).toBe(374);
   });
 
-  test("yearly pricing at key points", () => {
-    expect(calculatePrice(basicPlan, 20, "yearly")).toBe(23); // 29 * 0.8
-    expect(calculatePrice(basicPlan, 50, "yearly")).toBe(39); // 49 * 0.8
-    expect(calculatePrice(basicPlan, 100, "yearly")).toBe(79); // 99 * 0.8
+  test("yearly pricing at key points (20% discount)", () => {
+    expect(calculatePrice(professionalPlan, 5, "yearly")).toBe(39); // 49 * 0.8
+    expect(calculatePrice(professionalPlan, 50, "yearly")).toBe(206); // 258 * 0.8
+    expect(calculatePrice(professionalPlan, 100, "yearly")).toBe(392); // 490 * 0.8
 
     // Test some intermediate values
-    expect(calculatePrice(basicPlan, 35, "yearly")).toBe(31); // 39 * 0.8
-    expect(calculatePrice(basicPlan, 75, "yearly")).toBe(63); // 79 * 0.8
+    expect(calculatePrice(professionalPlan, 10, "yearly")).toBe(58); // 72 * 0.8
+    expect(calculatePrice(professionalPlan, 25, "yearly")).toBe(114); // 142 * 0.8
+    expect(calculatePrice(professionalPlan, 75, "yearly")).toBe(299); // 374 * 0.8
   });
 
   test("handles out-of-range values", () => {
-    expect(calculatePrice(basicPlan, 10, "monthly")).toBe(29); // Minimum price
-    expect(calculatePrice(basicPlan, 150, "monthly")).toBe(99); // Maximum price
+    expect(calculatePrice(professionalPlan, 1, "monthly")).toBe(49); // Minimum price (clamped to 5)
+    expect(calculatePrice(professionalPlan, 150, "monthly")).toBe(490); // Maximum price (clamped to 100)
   });
 });
 
-describe("Professional Plan Pricing", () => {
-  const professionalPlan = pricingTiers[1];
+describe("Enterprise Plan Pricing", () => {
+  const enterprisePlan = pricingTiers[1];
 
-  test("monthly pricing at key points", () => {
-    expect(calculatePrice(professionalPlan, 20, "monthly")).toBe(129);
-    expect(calculatePrice(professionalPlan, 50, "monthly")).toBe(249);
-    expect(calculatePrice(professionalPlan, 100, "monthly")).toBe(449);
-
-    // Test some intermediate values
-    expect(calculatePrice(professionalPlan, 35, "monthly")).toBe(189);
-    expect(calculatePrice(professionalPlan, 75, "monthly")).toBe(349);
-  });
-
-  test("yearly pricing at key points", () => {
-    expect(calculatePrice(professionalPlan, 20, "yearly")).toBe(103); // 129 * 0.8
-    expect(calculatePrice(professionalPlan, 50, "yearly")).toBe(199); // 249 * 0.8
-    expect(calculatePrice(professionalPlan, 100, "yearly")).toBe(359); // 449 * 0.8
-
-    // Test some intermediate values
-    expect(calculatePrice(professionalPlan, 35, "yearly")).toBe(151); // 189 * 0.8
-    expect(calculatePrice(professionalPlan, 75, "yearly")).toBe(279); // 349 * 0.8
-  });
-
-  test("handles out-of-range values", () => {
-    expect(calculatePrice(professionalPlan, 10, "monthly")).toBe(129); // Minimum price
-    expect(calculatePrice(professionalPlan, 150, "monthly")).toBe(449); // Maximum price
+  test("returns 0 for enterprise plan (custom pricing)", () => {
+    expect(calculatePrice(enterprisePlan, 100, "monthly")).toBe(0);
+    expect(calculatePrice(enterprisePlan, 500, "monthly")).toBe(0);
+    expect(calculatePrice(enterprisePlan, 100, "yearly")).toBe(0);
   });
 });

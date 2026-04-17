@@ -168,7 +168,7 @@ export const ClientSelector = memo(function ClientSelector({
             onValueChange={handleSliderChange}
             max={tier.maxClients}
             min={tier.minClients}
-            step={1}
+            step={tier.name === "Professional Plan" ? 5 : 1}
             className="flex-1"
             highlighted={highlighted}
             aria-label={`Slider for number of clients in ${tier.name}`}

@@ -1,23 +1,30 @@
   import type { PricingTier, BillingCycle } from "@/types/pricing";
 import { ANNUAL_DISCOUNT } from "./constants";
 
-function calculateStarterPrice(clients: number): number {
-  // Ensure clients is within bounds
-  const n = Math.min(Math.max(clients, 1), 19);
-
-  // Fixed price tiers for 1-3 clients
-  if (n === 1) return 15;
-  if (n === 2) return 27;
-  if (n === 3) return 39;
-
-  // For 4 to 19 clients: Price = $39 + $5 × (n - 3)
-  return 39 + (5 * (n - 3));
+function calculateProfessionalPrice(clients: number): number {
+  // Clients come in increments of 5: 5, 10, 15, ... 100
+  // Prices: 5 clients = $49, 100 clients = $490
+  // Total of 20 steps (5 to 100), price increases linearly
+  
+  const minClients = 5;
+  const maxClients = 100;
+  const basePrice = 49;
+  const maxPrice = 490;
+  
+  // Clamp clients to valid range
+  const clampedClients = Math.min(Math.max(clients, minClients), maxClients);
+  
+  // Calculate price based on position in range
+  // (clients - 5) / (100 - 5) = position ratio
+  // price = 49 + (490 - 49) * ratio
+  const ratio = (clampedClients - minClients) / (maxClients - minClients);
+  return Math.round(basePrice + (maxPrice - basePrice) * ratio);
 }
 
 function calculateLinearPrice(clients: number, tier: PricingTier): number {
-  // Special handling for Starter Plan
-  if (tier.name === "Starter Plan") {
-    return calculateStarterPrice(clients);
+  // Special handling for Professional Plan with step-based pricing
+  if (tier.name === "Professional Plan") {
+    return calculateProfessionalPrice(clients);
   }
 
   // Regular linear pricing for other plans
@@ -50,33 +57,20 @@ export function calculatePrice(
 
 export const pricingTiers: PricingTier[] = [
   {
-    name: "Starter Plan",
-    description: "For small teams managing up to 19 clients. Streamline reporting with essential tools.",
-    minClients: 1,
-    maxClients: 19,
-    basePrice: 15, // Starting price for 1 client
-    maxPrice: 119,
+    name: "Professional Plan",
+    description: "For growing agencies with up to 100 clients. Advanced tools for reporting and branding.",
+    minClients: 5,
+    maxClients: 100,
+    basePrice: 49,
+    maxPrice: 490,
     buttonText: "Start Your Free Trial",
+    highlighted: true,
     features: [
-      { text: "Collaborate with up to five team members" },
+      { text: "Collaborate with unlimited team members" },
       { text: "Create unlimited custom dashboards for each client" },
       { text: "Generate unlimited marketing reports" },
       { text: "Connect to all your data sources" },
       { text: "Leverage AI for faster insights" },
-      { text: "Customize reports with basic brand tools" },
-    ],
-  },
-  {
-    name: "Professional Plan",
-    description: "For growing agencies with up to 100 clients. Advanced tools for reporting and branding.",
-    minClients: 20,
-    maxClients: 100,
-    basePrice: 129,
-    maxPrice: 449,
-    buttonText: "Start Your Free Trial",
-    highlighted: true,
-    features: [
-      { text: "Unlimited team members for seamless collaboration" },
       { text: "Complete AI control with bring-your-own-key options" },
       { text: "Advanced Theme Builder for full brand control per client" },
       { text: "Custom Domain for branded client experiences" },

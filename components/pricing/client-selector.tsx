@@ -42,13 +42,23 @@ const NumberInput = memo(function NumberInput({
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
-    setDisplayValue(newValue);
-
-    // Only update numeric value and notify parent if it's a valid number
     const parsed = Number(newValue);
+    
+    // Only update if it's a valid number
     if (!isNaN(parsed)) {
-      setNumericValue(parsed);
-      onChange(event);
+      // Enforce step of 5 - round to nearest valid step value
+      const step = 5;
+      const rounded = Math.round(parsed / step) * step;
+      const clamped = Math.min(Math.max(rounded, min), max);
+      
+      setDisplayValue(String(clamped));
+      setNumericValue(clamped);
+      onChange({
+        target: { value: String(clamped) }
+      } as ChangeEvent<HTMLInputElement>);
+    } else {
+      // Allow typing non-numeric temporarily (will be fixed on blur)
+      setDisplayValue(newValue);
     }
   };
 

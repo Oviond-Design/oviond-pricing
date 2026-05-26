@@ -478,7 +478,7 @@ export function PricingTable() {
   );
 
   return (
-    <section className="w-full bg-slate-50 px-4 py-5 font-inter text-slate-950 sm:px-6 lg:px-8">
+    <section className="w-full bg-white px-4 py-5 font-inter text-slate-950 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[1280px]">
         <BillingTabs
           billingCycle={billingCycle}
@@ -589,7 +589,7 @@ export function PricingTable() {
             />
           </div>
 
-          <div className="border-t border-slate-200 bg-slate-50 p-5 sm:p-7 lg:p-8 xl:p-10">
+          <div className="border-t border-slate-200 bg-white p-5 sm:p-7 lg:p-8 xl:p-10">
             <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p

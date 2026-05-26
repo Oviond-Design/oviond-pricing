@@ -1,102 +1,560 @@
-  import type { PricingTier, BillingCycle } from "@/types/pricing";
-import { ANNUAL_DISCOUNT } from "./constants";
+import type { BillingCycle } from "@/types/pricing";
 
-function calculateStarterPrice(clients: number): number {
-  // Ensure clients is within bounds
-  const n = Math.min(Math.max(clients, 1), 19);
+export type AgencyPricingPoint = {
+  clients: number;
+  pricePerClient: number;
+  monthlyPrice: number;
+  annualMonthlyPrice: number;
+  annualYearlyTotal: number;
+  annualSavings: number;
+};
 
-  // Fixed price tiers for 1-3 clients
-  if (n === 1) return 15;
-  if (n === 2) return 27;
-  if (n === 3) return 39;
-
-  // For 4 to 19 clients: Price = $39 + $5 × (n - 3)
-  return 39 + (5 * (n - 3));
-}
-
-function calculateLinearPrice(clients: number, tier: PricingTier): number {
-  // Special handling for Starter Plan
-  if (tier.name === "Starter Plan") {
-    return calculateStarterPrice(clients);
-  }
-
-  // Regular linear pricing for other plans
-  const clampedClients = Math.min(
-    Math.max(clients, tier.minClients),
-    tier.maxClients,
-  );
-  const range = tier.maxClients - tier.minClients;
-  const priceRange = tier.maxPrice - tier.basePrice;
-  const clientsAboveMin = clampedClients - tier.minClients;
-  return Math.round(tier.basePrice + (priceRange * clientsAboveMin) / range);
-}
-
-export function calculatePrice(
-  tier: PricingTier,
-  clients: number,
-  billingCycle: BillingCycle,
-): number {
-  if (tier.basePrice === 0) return 0; // Enterprise Plan has no pricing
-
-  const monthlyPrice = calculateLinearPrice(clients, tier);
-
-  if (billingCycle === "yearly") {
-    // Apply 20% discount for annual billing
-    return Math.round(monthlyPrice * ANNUAL_DISCOUNT);
-  }
-
-  return monthlyPrice;
-}
-
-export const pricingTiers: PricingTier[] = [
+export const agencyPricingTable: AgencyPricingPoint[] = [
   {
-    name: "Starter Plan",
-    description: "For small teams managing up to 19 clients. Streamline reporting with essential tools.",
-    minClients: 1,
-    maxClients: 19,
-    basePrice: 15, // Starting price for 1 client
-    maxPrice: 119,
-    buttonText: "Start Your Free Trial",
-    features: [
-      { text: "Collaborate with up to five team members" },
-      { text: "Create unlimited custom dashboards for each client" },
-      { text: "Generate unlimited marketing reports" },
-      { text: "Connect to all your data sources" },
-      { text: "Leverage AI for faster insights" },
-      { text: "Customize reports with basic brand tools" },
-    ],
+    clients: 5,
+    pricePerClient: 9.8,
+    monthlyPrice: 49,
+    annualMonthlyPrice: 39,
+    annualYearlyTotal: 468,
+    annualSavings: 120,
   },
   {
-    name: "Professional Plan",
-    description: "For growing agencies with up to 100 clients. Advanced tools for reporting and branding.",
-    minClients: 20,
-    maxClients: 100,
-    basePrice: 129,
-    maxPrice: 449,
-    buttonText: "Start Your Free Trial",
-    highlighted: true,
-    features: [
-      { text: "Unlimited team members for seamless collaboration" },
-      { text: "Complete AI control with bring-your-own-key options" },
-      { text: "Advanced Theme Builder for full brand control per client" },
-      { text: "Custom Domain for branded client experiences" },
-      { text: "Dedicated onboarding support to accelerate setup" },
-      { text: "Dedicated account expert to drive your agency's growth" },
-    ],
+    clients: 10,
+    pricePerClient: 9.5,
+    monthlyPrice: 95,
+    annualMonthlyPrice: 76,
+    annualYearlyTotal: 912,
+    annualSavings: 228,
   },
   {
-    name: "Enterprise Plan",
-    description:
-      "For large agencies with 100+ clients. Custom solutions and support for seamless scaling.",
-    minClients: 100,
-    maxClients: 1000,
-    basePrice: 0,
-    maxPrice: 0,
-    buttonText: "Get a Custom Quote",
-    features: [
-      { text: "Multiple custom domains for branded experiences" },
-      { text: "Exclusive Premium Support, tailored to your agency's unique needs" },
-      { text: "Custom integrations to fit your tech stack" },
-    ],
+    clients: 15,
+    pricePerClient: 9.27,
+    monthlyPrice: 139,
+    annualMonthlyPrice: 111,
+    annualYearlyTotal: 1332,
+    annualSavings: 336,
+  },
+  {
+    clients: 20,
+    pricePerClient: 9.1,
+    monthlyPrice: 182,
+    annualMonthlyPrice: 146,
+    annualYearlyTotal: 1752,
+    annualSavings: 432,
+  },
+  {
+    clients: 25,
+    pricePerClient: 9,
+    monthlyPrice: 225,
+    annualMonthlyPrice: 180,
+    annualYearlyTotal: 2160,
+    annualSavings: 540,
+  },
+  {
+    clients: 30,
+    pricePerClient: 8.63,
+    monthlyPrice: 259,
+    annualMonthlyPrice: 207,
+    annualYearlyTotal: 2484,
+    annualSavings: 624,
+  },
+  {
+    clients: 35,
+    pricePerClient: 8.37,
+    monthlyPrice: 293,
+    annualMonthlyPrice: 234,
+    annualYearlyTotal: 2808,
+    annualSavings: 708,
+  },
+  {
+    clients: 40,
+    pricePerClient: 8.18,
+    monthlyPrice: 327,
+    annualMonthlyPrice: 262,
+    annualYearlyTotal: 3144,
+    annualSavings: 780,
+  },
+  {
+    clients: 45,
+    pricePerClient: 8.02,
+    monthlyPrice: 361,
+    annualMonthlyPrice: 289,
+    annualYearlyTotal: 3468,
+    annualSavings: 864,
+  },
+  {
+    clients: 50,
+    pricePerClient: 7.9,
+    monthlyPrice: 395,
+    annualMonthlyPrice: 316,
+    annualYearlyTotal: 3792,
+    annualSavings: 948,
+  },
+  {
+    clients: 55,
+    pricePerClient: 7.73,
+    monthlyPrice: 425,
+    annualMonthlyPrice: 340,
+    annualYearlyTotal: 4080,
+    annualSavings: 1020,
+  },
+  {
+    clients: 60,
+    pricePerClient: 7.58,
+    monthlyPrice: 455,
+    annualMonthlyPrice: 364,
+    annualYearlyTotal: 4368,
+    annualSavings: 1092,
+  },
+  {
+    clients: 65,
+    pricePerClient: 7.46,
+    monthlyPrice: 485,
+    annualMonthlyPrice: 388,
+    annualYearlyTotal: 4656,
+    annualSavings: 1164,
+  },
+  {
+    clients: 70,
+    pricePerClient: 7.36,
+    monthlyPrice: 515,
+    annualMonthlyPrice: 412,
+    annualYearlyTotal: 4944,
+    annualSavings: 1236,
+  },
+  {
+    clients: 75,
+    pricePerClient: 7.27,
+    monthlyPrice: 545,
+    annualMonthlyPrice: 436,
+    annualYearlyTotal: 5232,
+    annualSavings: 1308,
+  },
+  {
+    clients: 80,
+    pricePerClient: 7.19,
+    monthlyPrice: 575,
+    annualMonthlyPrice: 460,
+    annualYearlyTotal: 5520,
+    annualSavings: 1380,
+  },
+  {
+    clients: 85,
+    pricePerClient: 7.12,
+    monthlyPrice: 605,
+    annualMonthlyPrice: 484,
+    annualYearlyTotal: 5808,
+    annualSavings: 1452,
+  },
+  {
+    clients: 90,
+    pricePerClient: 7.06,
+    monthlyPrice: 635,
+    annualMonthlyPrice: 508,
+    annualYearlyTotal: 6096,
+    annualSavings: 1524,
+  },
+  {
+    clients: 95,
+    pricePerClient: 7,
+    monthlyPrice: 665,
+    annualMonthlyPrice: 532,
+    annualYearlyTotal: 6384,
+    annualSavings: 1596,
+  },
+  {
+    clients: 100,
+    pricePerClient: 6.95,
+    monthlyPrice: 695,
+    annualMonthlyPrice: 556,
+    annualYearlyTotal: 6672,
+    annualSavings: 1668,
+  },
+  {
+    clients: 110,
+    pricePerClient: 6.86,
+    monthlyPrice: 755,
+    annualMonthlyPrice: 604,
+    annualYearlyTotal: 7248,
+    annualSavings: 1812,
+  },
+  {
+    clients: 120,
+    pricePerClient: 6.79,
+    monthlyPrice: 815,
+    annualMonthlyPrice: 652,
+    annualYearlyTotal: 7824,
+    annualSavings: 1956,
+  },
+  {
+    clients: 130,
+    pricePerClient: 6.73,
+    monthlyPrice: 875,
+    annualMonthlyPrice: 700,
+    annualYearlyTotal: 8400,
+    annualSavings: 2100,
+  },
+  {
+    clients: 140,
+    pricePerClient: 6.68,
+    monthlyPrice: 935,
+    annualMonthlyPrice: 748,
+    annualYearlyTotal: 8976,
+    annualSavings: 2244,
+  },
+  {
+    clients: 150,
+    pricePerClient: 6.63,
+    monthlyPrice: 995,
+    annualMonthlyPrice: 796,
+    annualYearlyTotal: 9552,
+    annualSavings: 2388,
+  },
+  {
+    clients: 160,
+    pricePerClient: 6.59,
+    monthlyPrice: 1055,
+    annualMonthlyPrice: 844,
+    annualYearlyTotal: 10128,
+    annualSavings: 2532,
+  },
+  {
+    clients: 170,
+    pricePerClient: 6.56,
+    monthlyPrice: 1115,
+    annualMonthlyPrice: 892,
+    annualYearlyTotal: 10704,
+    annualSavings: 2676,
+  },
+  {
+    clients: 180,
+    pricePerClient: 6.53,
+    monthlyPrice: 1175,
+    annualMonthlyPrice: 940,
+    annualYearlyTotal: 11280,
+    annualSavings: 2820,
+  },
+  {
+    clients: 190,
+    pricePerClient: 6.5,
+    monthlyPrice: 1235,
+    annualMonthlyPrice: 988,
+    annualYearlyTotal: 11856,
+    annualSavings: 2964,
+  },
+  {
+    clients: 200,
+    pricePerClient: 6.47,
+    monthlyPrice: 1295,
+    annualMonthlyPrice: 1036,
+    annualYearlyTotal: 12432,
+    annualSavings: 3108,
+  },
+  {
+    clients: 210,
+    pricePerClient: 6.4,
+    monthlyPrice: 1345,
+    annualMonthlyPrice: 1076,
+    annualYearlyTotal: 12912,
+    annualSavings: 3228,
+  },
+  {
+    clients: 220,
+    pricePerClient: 6.34,
+    monthlyPrice: 1395,
+    annualMonthlyPrice: 1116,
+    annualYearlyTotal: 13392,
+    annualSavings: 3348,
+  },
+  {
+    clients: 230,
+    pricePerClient: 6.28,
+    monthlyPrice: 1445,
+    annualMonthlyPrice: 1156,
+    annualYearlyTotal: 13872,
+    annualSavings: 3468,
+  },
+  {
+    clients: 240,
+    pricePerClient: 6.23,
+    monthlyPrice: 1495,
+    annualMonthlyPrice: 1196,
+    annualYearlyTotal: 14352,
+    annualSavings: 3588,
+  },
+  {
+    clients: 250,
+    pricePerClient: 6.18,
+    monthlyPrice: 1545,
+    annualMonthlyPrice: 1236,
+    annualYearlyTotal: 14832,
+    annualSavings: 3708,
+  },
+  {
+    clients: 260,
+    pricePerClient: 6.13,
+    monthlyPrice: 1595,
+    annualMonthlyPrice: 1276,
+    annualYearlyTotal: 15312,
+    annualSavings: 3828,
+  },
+  {
+    clients: 270,
+    pricePerClient: 6.09,
+    monthlyPrice: 1645,
+    annualMonthlyPrice: 1316,
+    annualYearlyTotal: 15792,
+    annualSavings: 3948,
+  },
+  {
+    clients: 280,
+    pricePerClient: 6.05,
+    monthlyPrice: 1695,
+    annualMonthlyPrice: 1356,
+    annualYearlyTotal: 16272,
+    annualSavings: 4068,
+  },
+  {
+    clients: 290,
+    pricePerClient: 6.02,
+    monthlyPrice: 1745,
+    annualMonthlyPrice: 1396,
+    annualYearlyTotal: 16752,
+    annualSavings: 4188,
+  },
+  {
+    clients: 300,
+    pricePerClient: 5.98,
+    monthlyPrice: 1795,
+    annualMonthlyPrice: 1436,
+    annualYearlyTotal: 17232,
+    annualSavings: 4308,
+  },
+  {
+    clients: 310,
+    pricePerClient: 5.95,
+    monthlyPrice: 1845,
+    annualMonthlyPrice: 1476,
+    annualYearlyTotal: 17712,
+    annualSavings: 4428,
+  },
+  {
+    clients: 320,
+    pricePerClient: 5.92,
+    monthlyPrice: 1895,
+    annualMonthlyPrice: 1516,
+    annualYearlyTotal: 18192,
+    annualSavings: 4548,
+  },
+  {
+    clients: 330,
+    pricePerClient: 5.89,
+    monthlyPrice: 1945,
+    annualMonthlyPrice: 1556,
+    annualYearlyTotal: 18672,
+    annualSavings: 4668,
+  },
+  {
+    clients: 340,
+    pricePerClient: 5.87,
+    monthlyPrice: 1995,
+    annualMonthlyPrice: 1596,
+    annualYearlyTotal: 19152,
+    annualSavings: 4788,
+  },
+  {
+    clients: 350,
+    pricePerClient: 5.84,
+    monthlyPrice: 2045,
+    annualMonthlyPrice: 1636,
+    annualYearlyTotal: 19632,
+    annualSavings: 4908,
+  },
+  {
+    clients: 360,
+    pricePerClient: 5.82,
+    monthlyPrice: 2095,
+    annualMonthlyPrice: 1676,
+    annualYearlyTotal: 20112,
+    annualSavings: 5028,
+  },
+  {
+    clients: 370,
+    pricePerClient: 5.8,
+    monthlyPrice: 2145,
+    annualMonthlyPrice: 1716,
+    annualYearlyTotal: 20592,
+    annualSavings: 5148,
+  },
+  {
+    clients: 380,
+    pricePerClient: 5.78,
+    monthlyPrice: 2195,
+    annualMonthlyPrice: 1756,
+    annualYearlyTotal: 21072,
+    annualSavings: 5268,
+  },
+  {
+    clients: 390,
+    pricePerClient: 5.76,
+    monthlyPrice: 2245,
+    annualMonthlyPrice: 1796,
+    annualYearlyTotal: 21552,
+    annualSavings: 5388,
+  },
+  {
+    clients: 400,
+    pricePerClient: 5.74,
+    monthlyPrice: 2295,
+    annualMonthlyPrice: 1836,
+    annualYearlyTotal: 22032,
+    annualSavings: 5508,
+  },
+  {
+    clients: 410,
+    pricePerClient: 5.72,
+    monthlyPrice: 2345,
+    annualMonthlyPrice: 1876,
+    annualYearlyTotal: 22512,
+    annualSavings: 5628,
+  },
+  {
+    clients: 420,
+    pricePerClient: 5.7,
+    monthlyPrice: 2395,
+    annualMonthlyPrice: 1916,
+    annualYearlyTotal: 22992,
+    annualSavings: 5748,
+  },
+  {
+    clients: 430,
+    pricePerClient: 5.69,
+    monthlyPrice: 2445,
+    annualMonthlyPrice: 1956,
+    annualYearlyTotal: 23472,
+    annualSavings: 5868,
+  },
+  {
+    clients: 440,
+    pricePerClient: 5.67,
+    monthlyPrice: 2495,
+    annualMonthlyPrice: 1996,
+    annualYearlyTotal: 23952,
+    annualSavings: 5988,
+  },
+  {
+    clients: 450,
+    pricePerClient: 5.66,
+    monthlyPrice: 2545,
+    annualMonthlyPrice: 2036,
+    annualYearlyTotal: 24432,
+    annualSavings: 6108,
+  },
+  {
+    clients: 460,
+    pricePerClient: 5.64,
+    monthlyPrice: 2595,
+    annualMonthlyPrice: 2076,
+    annualYearlyTotal: 24912,
+    annualSavings: 6228,
+  },
+  {
+    clients: 470,
+    pricePerClient: 5.63,
+    monthlyPrice: 2645,
+    annualMonthlyPrice: 2116,
+    annualYearlyTotal: 25392,
+    annualSavings: 6348,
+  },
+  {
+    clients: 480,
+    pricePerClient: 5.61,
+    monthlyPrice: 2695,
+    annualMonthlyPrice: 2156,
+    annualYearlyTotal: 25872,
+    annualSavings: 6468,
+  },
+  {
+    clients: 490,
+    pricePerClient: 5.6,
+    monthlyPrice: 2745,
+    annualMonthlyPrice: 2196,
+    annualYearlyTotal: 26352,
+    annualSavings: 6588,
+  },
+  {
+    clients: 500,
+    pricePerClient: 5.59,
+    monthlyPrice: 2795,
+    annualMonthlyPrice: 2236,
+    annualYearlyTotal: 26832,
+    annualSavings: 6708,
+  },
+  {
+    clients: 600,
+    pricePerClient: 5.39,
+    monthlyPrice: 3235,
+    annualMonthlyPrice: 2588,
+    annualYearlyTotal: 31056,
+    annualSavings: 7764,
+  },
+  {
+    clients: 700,
+    pricePerClient: 5.25,
+    monthlyPrice: 3675,
+    annualMonthlyPrice: 2940,
+    annualYearlyTotal: 35280,
+    annualSavings: 8820,
+  },
+  {
+    clients: 800,
+    pricePerClient: 5.14,
+    monthlyPrice: 4115,
+    annualMonthlyPrice: 3292,
+    annualYearlyTotal: 39504,
+    annualSavings: 9876,
+  },
+  {
+    clients: 900,
+    pricePerClient: 5.06,
+    monthlyPrice: 4555,
+    annualMonthlyPrice: 3644,
+    annualYearlyTotal: 43728,
+    annualSavings: 10932,
+  },
+  {
+    clients: 1000,
+    pricePerClient: 5,
+    monthlyPrice: 4995,
+    annualMonthlyPrice: 3996,
+    annualYearlyTotal: 47952,
+    annualSavings: 11988,
   },
 ];
+
+export function getAgencyPricingPoint(index: number): AgencyPricingPoint {
+  const clampedIndex = Math.min(
+    Math.max(index, 0),
+    agencyPricingTable.length - 1,
+  );
+
+  return agencyPricingTable[clampedIndex];
+}
+
+export function calculateAgencyPrice(
+  point: AgencyPricingPoint,
+  billingCycle: BillingCycle,
+): number {
+  return billingCycle === "yearly"
+    ? point.annualMonthlyPrice
+    : point.monthlyPrice;
+}
+
+export function calculateAgencyEffectivePrice(
+  point: AgencyPricingPoint,
+  billingCycle: BillingCycle,
+): number {
+  return billingCycle === "yearly"
+    ? point.annualMonthlyPrice / point.clients
+    : point.pricePerClient;
+}

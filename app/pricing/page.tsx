@@ -1,17 +1,15 @@
 import { PricingTable } from "@/components/pricing/pricing-table";
 
 export const metadata = {
-  title: "Pricing Plans",
-  description: "Choose the perfect plan for your agency's needs",
+  title: "Oviond Agency Pricing",
+  description:
+    "One simple Oviond plan for agency reporting. Use the pricing slider to see monthly and annual pricing by client count, with API and MCP access included.",
 };
 
 export default function PricingPage() {
   return (
-    <div className="container mx-auto py-12">
-      <h1 className="text-4xl font-bold text-center mb-8 font-lexend">
-        Our Pricing Plans
-      </h1>
+    <main className="w-full">
       <PricingTable />
-    </div>
+    </main>
   );
 }

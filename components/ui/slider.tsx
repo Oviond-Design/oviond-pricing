@@ -14,30 +14,27 @@ const Slider = React.forwardRef<
   <SliderPrimitive.Root
     ref={ref}
     className={cn(
-      "relative flex w-full touch-none select-none items-center",
+      "relative flex min-h-11 w-full touch-none select-none items-center",
       className,
     )}
     {...props}
   >
     <SliderPrimitive.Track
       className={cn(
-        "relative h-3 w-full grow overflow-hidden rounded-full",
-        highlighted ? "bg-[#d5e4ff]" : "bg-neutral-100",
+        "relative h-2 w-full grow overflow-hidden rounded-full",
+        highlighted ? "bg-blue-100" : "bg-neutral-100",
       )}
     >
       <SliderPrimitive.Range
-        className={cn(
-          "absolute h-full transition-colors",
-          "bg-[#2f45ff]"
-        )}
+        className={cn("absolute h-full transition-colors", "bg-blue-700")}
       />
     </SliderPrimitive.Track>
     <SliderPrimitive.Thumb
       className={cn(
-        "block h-6 w-6 rounded-full border-[3px] shadow-md transition-all outline-none disabled:pointer-events-none disabled:opacity-50",
+        "block rounded-full border-blue-700 bg-white shadow-sm outline-none transition-transform disabled:pointer-events-none disabled:opacity-50",
         highlighted
-          ? "bg-white border-[#0c0eff] hover:border-opacity-90 hover:scale-110 animate-constant-pulse ring-2 ring-offset-2 ring-[#0c0eff]"
-          : "bg-white border-[#0c0eff] hover:border-opacity-90 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0c0eff] focus-visible:animate-focus-pulse",
+          ? "size-6 border-[3px] ring-2 ring-blue-700 ring-offset-2 animate-constant-pulse hover:scale-110 focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2"
+          : "size-5 border-2 hover:scale-105 focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2",
       )}
     />
   </SliderPrimitive.Root>

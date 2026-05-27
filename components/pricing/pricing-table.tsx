@@ -398,7 +398,7 @@ const PriceSummary = memo(function PriceSummary({
           onClick={openSignup}
           className={pricingUi.primaryButton}
         >
-          Update plan
+          Start Free Trial
         </Button>
 
         <p className="mt-3 text-center text-sm font-semibold text-slate-500">

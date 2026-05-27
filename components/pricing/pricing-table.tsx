@@ -125,6 +125,11 @@ const pricingUi = {
     "h-11 rounded-md border border-blue-700 bg-white px-5 text-sm font-bold text-blue-700 hover:bg-blue-50 hover:text-blue-800",
 };
 
+const maxSliderClients = 500;
+const maxSliderIndex = agencyPricingTable.findIndex(
+  (point) => point.clients === maxSliderClients,
+);
+
 function formatCurrency(value: number): string {
   return Number.isInteger(value)
     ? wholeCurrencyFormatter.format(value)
@@ -373,13 +378,12 @@ const PriceSummary = memo(function PriceSummary({
           <p>
             {billingCycle === "yearly"
               ? `Billed annually at ${formatCurrency(annualYearlyTotal)} per year. You save ${formatCurrency(annualSavings)}.`
-              : "Billed monthly. Change your client count anytime. Cancel anytime."}
+              : "Billed monthly. Change client count anytime."}
           </p>
         </div>
 
         <p className="text-base font-bold text-slate-500">
-          {perClientFormatter.format(effectivePrice)} per client/month with
-          every core feature included.
+          {perClientFormatter.format(effectivePrice)} per client/month
         </p>
 
         <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-extrabold text-emerald-800 sm:text-sm">
@@ -394,11 +398,11 @@ const PriceSummary = memo(function PriceSummary({
           onClick={openSignup}
           className={pricingUi.primaryButton}
         >
-          Start Free Trial
+          Update plan
         </Button>
 
         <p className="mt-3 text-center text-sm font-semibold text-slate-500">
-          14-day trial. No credit card required.
+          Features stay included when your client count changes.
         </p>
       </div>
     </aside>
@@ -453,15 +457,16 @@ export function PricingTable() {
     billingCycle,
   );
 
-  const maxIndex = agencyPricingTable.length - 1;
+  const maxIndex =
+    maxSliderIndex >= 0 ? maxSliderIndex : agencyPricingTable.length - 1;
 
   const handleBillingCycleChange = useCallback((value: string) => {
     setBillingCycle(value as BillingCycle);
   }, []);
 
   const handleSliderChange = useCallback((value: number[]) => {
-    setPriceIndex(value[0]);
-  }, []);
+    setPriceIndex(Math.min(value[0], maxIndex));
+  }, [maxIndex]);
 
   const decreaseClients = useCallback(() => {
     setPriceIndex((currentIndex) => Math.max(currentIndex - 1, 0));
@@ -500,16 +505,14 @@ export function PricingTable() {
                     pricingUi.accentText,
                   )}
                 >
-                  One simple agency plan
+                  One agency plan
                 </p>
                 <h2 className="font-lexend text-3xl font-extrabold leading-[1.08] tracking-normal text-slate-950 sm:text-[2.25rem] lg:text-[2.875rem]">
-                  One simple plan for agency reporting.
+                  Pricing that scales with your agency
                 </h2>
                 <p className="max-w-[690px] text-base font-medium leading-7 text-slate-600 sm:text-lg sm:leading-8">
-                  Start with 5 clients and get the full Oviond platform from day
-                  one: white-label reporting, dashboards, automated reports,
-                  custom domains, templates, integrations, API access, and the
-                  Oviond MCP server.
+                  Start at $49/month for 5 clients. Every core feature stays
+                  included as you grow.
                 </p>
               </div>
 
@@ -520,8 +523,11 @@ export function PricingTable() {
                       htmlFor="agency-client-slider"
                       className="block text-base font-bold text-slate-950"
                     >
-                      Clients managed for reporting
+                      Clients you report for
                     </label>
+                    <p className="mt-2 max-w-[360px] text-sm font-medium leading-6 text-slate-500">
+                      Choose your client count. Your price updates instantly.
+                    </p>
                   </div>
 
                   <Stepper
@@ -547,23 +553,22 @@ export function PricingTable() {
                   />
                   <div className="flex items-start justify-between text-sm font-bold text-slate-500">
                     <span>5</span>
-                    <span>1000</span>
+                    <span>{maxSliderClients}</span>
                   </div>
                   <p className="max-w-[640px] text-xs font-semibold leading-5 text-slate-500 sm:text-sm">
-                    A client means one reporting profile, brand, store,
-                    franchise branch, or business you report on.
+                    A client is one reporting profile, brand, store, branch, or
+                    business you report for.
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-4 rounded-md border border-blue-100 bg-blue-50/60 p-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="text-sm font-semibold leading-6 text-slate-700">
                     <p className="font-extrabold text-slate-950">
-                      More than 1,000 clients?
+                      Need volume pricing or a custom plan?
                     </p>
                     <p>
-                      We&rsquo;ll build a simple volume plan around your agency,
-                      with the same clear pricing model and no feature-gate
-                      maze.
+                      Built for agencies with unique onboarding, integration, or
+                      security needs.
                     </p>
                   </div>
                   <Button
@@ -572,7 +577,7 @@ export function PricingTable() {
                     onClick={openContactSalesBot}
                     className={cn("shrink-0", pricingUi.secondaryButton)}
                   >
-                    Talk to Sales
+                    Get in touch -&gt;
                   </Button>
                 </div>
               </div>
